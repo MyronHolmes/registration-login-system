@@ -39,6 +39,12 @@ public class UserServiceImpl implements UserService {
         user.setRoles(Arrays.asList(role));
         userRepository.save(user);
     }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findAllByEmail(email);
+    }
+
     private Role checkRoleExist(){
         Role role = new Role();
         role.setName("ROLE_ADMIN");
