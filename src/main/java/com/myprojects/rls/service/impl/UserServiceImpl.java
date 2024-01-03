@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -43,6 +45,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByEmail(String email) {
         return userRepository.findAllByEmail(email);
+    }
+
+    @Override
+    public List<UserDto> findAllUsers() {
+        List<User> users = userRepository.findAll();
+
+        return users.stream()
+                .map((user) -> mapToUserDto(user))
+                .collect(Collectors.toList());
+    }
+
+    private UserDto mapToUserDto(User user){
+        UserDto userDto = new UserDto();
+        String[] str = user.getName().split(" ");
+        userDto.setFirstName(str[0]);
+        userDto.setLastName(str[1]);
+        userDto.setEmail(userDto.getEmail());
+        return userDto;
     }
 
     private Role checkRoleExist(){
